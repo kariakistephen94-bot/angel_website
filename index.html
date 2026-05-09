@@ -1642,6 +1642,32 @@
     if (e.key === 'ArrowRight') showNext();
   });
 
+  // Mobile Swipe Logic for Lightbox
+  let touchStartX = 0;
+  let touchEndX = 0;
+  
+  lightbox.addEventListener('touchstart', e => {
+    touchStartX = e.changedTouches[0].screenX;
+  }, { passive: true });
+  
+  lightbox.addEventListener('touchend', e => {
+    touchEndX = e.changedTouches[0].screenX;
+    handleSwipe();
+  }, { passive: true });
+  
+  function handleSwipe() {
+    if (!lightbox.classList.contains('open')) return;
+    const swipeThreshold = 50;
+    if (touchEndX < touchStartX - swipeThreshold) {
+      // Swiped Left
+      showNext();
+    }
+    if (touchEndX > touchStartX + swipeThreshold) {
+      // Swiped Right
+      showPrev();
+    }
+  }
+
   // Theme Toggle Logic
   const themeToggleBtn = document.getElementById('themeToggle');
   const themeIcon = document.getElementById('themeIcon');
